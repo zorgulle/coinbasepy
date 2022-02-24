@@ -1,12 +1,15 @@
 from flask import redirect
+from urllib.parse import urlencode, urljoin
+
 
 class Connector:
     """Interact with the API
     """
-    def __init__(self, client_id: str, redirect_uri: str):
+    def __init__(self, client_id: str, redirect_uri: str, scope:str):
         super(Connector, self).__init__()
         self.client_id = client_id
         self.redirect_uri = redirect_uri
+        self.scope = scope
 
     def authorize(self):
         #GET https://www.coinbase.com/oauth/authorize?response_type=code&client_id=YOUR_CLIENT_ID&redirect_uri=YOUR_REDIRECT_URL&state=SECURE_RANDOM&scope=wallet:accounts:read
@@ -15,7 +18,11 @@ class Connector:
             "response_type": "code",
             "client_id": self.client_id,
             "redirect_uri": self.redirect_uri,
-            "state": state
+            "state": "astate",
+            "scope": self.scope
         }
-        return redirect("http://google.com")
+
+        encoded_params = urlencode(params)
+
+        return redirect(urljoin("https://www.coinbase.com/oauth/authorize?", encoded_params))
     

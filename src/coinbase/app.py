@@ -3,7 +3,9 @@ from flask_api import FlaskAPI
 from coinbase.connector import Connector
 
 app = FlaskAPI(__name__)
-connector = Connector()
+app.config.from_object("src.coinbase.config.Dev")
+
+connector = Connector(client_id=app.config["CLIENT_ID"], redirect_uri=app.config["REDIRECT_URI"], scope=app.config["SCOPE"])
 
 @app.route("/authorize", methods=["GET"])
 def index():
