@@ -1,3 +1,4 @@
 flask-api
 requests
 python-dotenv
+pytest
